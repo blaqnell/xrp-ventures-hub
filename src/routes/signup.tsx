@@ -40,7 +40,7 @@ function Signup() {
     setErr(null);
     const fd = new FormData(e.currentTarget);
     const parsed = schema.safeParse({ displayName: fd.get("displayName"), email: fd.get("email"), password: fd.get("password"), terms });
-    if (!parsed.success) return setErr(parsed.error.issues[0].message);
+    if (!parsed.success) return setErr(parsed.error.issues[0]?.message ?? "Invalid input");
     setBusy(true);
     const { error } = await supabase.auth.signUp({
       email: parsed.data.email,

@@ -27,9 +27,9 @@ export const recordSnapshot = createServerFn({ method: "POST" })
     if ((count ?? 0) >= 6) throw new Error("Snapshot limit reached (6 per hour).");
     const { error: insErr } = await supabaseAdmin.from("portfolio_snapshots").insert({
       user_id: userId,
-      total_quantity: qty.toFixed(8),
+      total_quantity: qty.toFixed(8) as unknown as number,
       price_usd: quote.priceUsd,
-      value_usd: qty.mul(quote.priceUsd).toFixed(2),
+      value_usd: qty.mul(quote.priceUsd).toFixed(2) as unknown as number,
       price_source: quote.source,
     });
     if (insErr) throw new Error("Could not save snapshot");

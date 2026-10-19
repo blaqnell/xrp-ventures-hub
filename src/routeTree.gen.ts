@@ -26,12 +26,15 @@ import { Route as RiskDisclosureRouteImport } from './routes/risk-disclosure'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardMarketsRouteImport } from './routes/_authenticated/dashboard.markets'
 import { Route as AuthenticatedDashboardPerformanceRouteImport } from './routes/_authenticated/dashboard.performance'
 import { Route as AuthenticatedDashboardPortfolioRouteImport } from './routes/_authenticated/dashboard.portfolio'
+import { Route as AuthenticatedDashboardProfileRouteImport } from './routes/_authenticated/dashboard.profile'
+import { Route as AuthenticatedDashboardSupportRouteImport } from './routes/_authenticated/dashboard.support'
 import { Route as AuthenticatedDashboardTransactionsRouteImport } from './routes/_authenticated/dashboard.transactions'
 import { Route as AuthenticatedDashboardWatchlistRouteImport } from './routes/_authenticated/dashboard.watchlist'
 
@@ -119,6 +122,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -153,6 +161,18 @@ const AuthenticatedDashboardPortfolioRoute =
     path: '/portfolio',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardProfileRoute =
+  AuthenticatedDashboardProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardSupportRoute =
+  AuthenticatedDashboardSupportRouteImport.update({
+    id: '/support',
+    path: '/support',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardTransactionsRoute =
   AuthenticatedDashboardTransactionsRouteImport.update({
     id: '/transactions',
@@ -183,11 +203,14 @@ export interface FileRoutesByFullPath {
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/dashboard/markets': typeof AuthenticatedDashboardMarketsRoute
   '/dashboard/performance': typeof AuthenticatedDashboardPerformanceRoute
   '/dashboard/portfolio': typeof AuthenticatedDashboardPortfolioRoute
+  '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
+  '/dashboard/support': typeof AuthenticatedDashboardSupportRoute
   '/dashboard/transactions': typeof AuthenticatedDashboardTransactionsRoute
   '/dashboard/watchlist': typeof AuthenticatedDashboardWatchlistRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
@@ -209,10 +232,13 @@ export interface FileRoutesByTo {
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/dashboard/markets': typeof AuthenticatedDashboardMarketsRoute
   '/dashboard/performance': typeof AuthenticatedDashboardPerformanceRoute
   '/dashboard/portfolio': typeof AuthenticatedDashboardPortfolioRoute
+  '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
+  '/dashboard/support': typeof AuthenticatedDashboardSupportRoute
   '/dashboard/transactions': typeof AuthenticatedDashboardTransactionsRoute
   '/dashboard/watchlist': typeof AuthenticatedDashboardWatchlistRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
@@ -236,11 +262,14 @@ export interface FileRoutesById {
   '/security': typeof SecurityRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/_authenticated/dashboard/markets': typeof AuthenticatedDashboardMarketsRoute
   '/_authenticated/dashboard/performance': typeof AuthenticatedDashboardPerformanceRoute
   '/_authenticated/dashboard/portfolio': typeof AuthenticatedDashboardPortfolioRoute
+  '/_authenticated/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
+  '/_authenticated/dashboard/support': typeof AuthenticatedDashboardSupportRoute
   '/_authenticated/dashboard/transactions': typeof AuthenticatedDashboardTransactionsRoute
   '/_authenticated/dashboard/watchlist': typeof AuthenticatedDashboardWatchlistRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
@@ -264,11 +293,14 @@ export interface FileRouteTypes {
     | '/security'
     | '/signup'
     | '/terms'
+    | '/admin'
     | '/dashboard'
     | '/auth/callback'
     | '/dashboard/markets'
     | '/dashboard/performance'
     | '/dashboard/portfolio'
+    | '/dashboard/profile'
+    | '/dashboard/support'
     | '/dashboard/transactions'
     | '/dashboard/watchlist'
     | '/dashboard/'
@@ -290,10 +322,13 @@ export interface FileRouteTypes {
     | '/security'
     | '/signup'
     | '/terms'
+    | '/admin'
     | '/auth/callback'
     | '/dashboard/markets'
     | '/dashboard/performance'
     | '/dashboard/portfolio'
+    | '/dashboard/profile'
+    | '/dashboard/support'
     | '/dashboard/transactions'
     | '/dashboard/watchlist'
     | '/dashboard'
@@ -316,11 +351,14 @@ export interface FileRouteTypes {
     | '/security'
     | '/signup'
     | '/terms'
+    | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/auth/callback'
     | '/_authenticated/dashboard/markets'
     | '/_authenticated/dashboard/performance'
     | '/_authenticated/dashboard/portfolio'
+    | '/_authenticated/dashboard/profile'
+    | '/_authenticated/dashboard/support'
     | '/_authenticated/dashboard/transactions'
     | '/_authenticated/dashboard/watchlist'
     | '/_authenticated/dashboard/'
@@ -468,6 +506,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -510,6 +555,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardPortfolioRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/profile': {
+      id: '/_authenticated/dashboard/profile'
+      path: '/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof AuthenticatedDashboardProfileRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/support': {
+      id: '/_authenticated/dashboard/support'
+      path: '/support'
+      fullPath: '/dashboard/support'
+      preLoaderRoute: typeof AuthenticatedDashboardSupportRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/transactions': {
       id: '/_authenticated/dashboard/transactions'
       path: '/transactions'
@@ -531,6 +590,8 @@ interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardMarketsRoute: typeof AuthenticatedDashboardMarketsRoute
   AuthenticatedDashboardPerformanceRoute: typeof AuthenticatedDashboardPerformanceRoute
   AuthenticatedDashboardPortfolioRoute: typeof AuthenticatedDashboardPortfolioRoute
+  AuthenticatedDashboardProfileRoute: typeof AuthenticatedDashboardProfileRoute
+  AuthenticatedDashboardSupportRoute: typeof AuthenticatedDashboardSupportRoute
   AuthenticatedDashboardTransactionsRoute: typeof AuthenticatedDashboardTransactionsRoute
   AuthenticatedDashboardWatchlistRoute: typeof AuthenticatedDashboardWatchlistRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
@@ -542,6 +603,8 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
     AuthenticatedDashboardPerformanceRoute:
       AuthenticatedDashboardPerformanceRoute,
     AuthenticatedDashboardPortfolioRoute: AuthenticatedDashboardPortfolioRoute,
+    AuthenticatedDashboardProfileRoute: AuthenticatedDashboardProfileRoute,
+    AuthenticatedDashboardSupportRoute: AuthenticatedDashboardSupportRoute,
     AuthenticatedDashboardTransactionsRoute:
       AuthenticatedDashboardTransactionsRoute,
     AuthenticatedDashboardWatchlistRoute: AuthenticatedDashboardWatchlistRoute,
@@ -554,10 +617,12 @@ const AuthenticatedDashboardRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
 }
 

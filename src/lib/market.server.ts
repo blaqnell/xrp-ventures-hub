@@ -30,7 +30,7 @@ function toQuote(row: Row, status: Quote["status"], message?: string): Quote {
     source: row.source,
     providerUpdatedAt: row.provider_updated_at,
     fetchedAt: row.fetched_at,
-    message,
+    ...(message ? { message } : {}),
   };
 }
 

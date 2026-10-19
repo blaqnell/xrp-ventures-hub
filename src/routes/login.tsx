@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { safeRedirectPath } from "@/lib/safe-redirect";
 
 export const Route = createFileRoute("/login")({
-  validateSearch: (s: Record<string, unknown>): { redirect?: string } => (typeof s.redirect === "string" ? { redirect: s.redirect } : {}),
+  validateSearch: (s: Record<string, unknown>): { redirect?: string } => (typeof s["redirect"] === "string" ? { redirect: s["redirect"] } : {}),
   head: () => ({
     meta: [
       { title: "Sign in | XRP Ventures" },
@@ -42,7 +42,7 @@ function Login() {
     setErr(null);
     const fd = new FormData(e.currentTarget);
     const parsed = schema.safeParse({ email: fd.get("email"), password: fd.get("password") });
-    if (!parsed.success) return setErr(parsed.error.issues[0].message);
+    if (!parsed.success) return setErr(parsed.error.issues[0]?.message ?? "Invalid input");
     setBusy(true);
     const { error } = await supabase.auth.signInWithPassword(parsed.data);
     if (error) {
