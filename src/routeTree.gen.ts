@@ -11,7 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CookiesRouteImport } from './routes/cookies'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as MarketsRouteImport } from './routes/markets'
 import { Route as PlatformRouteImport } from './routes/platform'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -29,9 +32,24 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CookiesRoute = CookiesRouteImport.update({
   id: '/cookies',
   path: '/cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeaderboardRoute = LeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketsRoute = MarketsRouteImport.update({
@@ -68,7 +86,10 @@ const TermsRoute = TermsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/faq': typeof FaqRoute
+  '/leaderboard': typeof LeaderboardRoute
   '/markets': typeof MarketsRoute
   '/platform': typeof PlatformRoute
   '/privacy': typeof PrivacyRoute
@@ -79,7 +100,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/faq': typeof FaqRoute
+  '/leaderboard': typeof LeaderboardRoute
   '/markets': typeof MarketsRoute
   '/platform': typeof PlatformRoute
   '/privacy': typeof PrivacyRoute
@@ -91,7 +115,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/faq': typeof FaqRoute
+  '/leaderboard': typeof LeaderboardRoute
   '/markets': typeof MarketsRoute
   '/platform': typeof PlatformRoute
   '/privacy': typeof PrivacyRoute
@@ -104,7 +131,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/contact'
     | '/cookies'
+    | '/faq'
+    | '/leaderboard'
     | '/markets'
     | '/platform'
     | '/privacy'
@@ -115,7 +145,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/contact'
     | '/cookies'
+    | '/faq'
+    | '/leaderboard'
     | '/markets'
     | '/platform'
     | '/privacy'
@@ -126,7 +159,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/contact'
     | '/cookies'
+    | '/faq'
+    | '/leaderboard'
     | '/markets'
     | '/platform'
     | '/privacy'
@@ -138,7 +174,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
+  FaqRoute: typeof FaqRoute
+  LeaderboardRoute: typeof LeaderboardRoute
   MarketsRoute: typeof MarketsRoute
   PlatformRoute: typeof PlatformRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -163,11 +202,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cookies': {
       id: '/cookies'
       path: '/cookies'
       fullPath: '/cookies'
       preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leaderboard': {
+      id: '/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof LeaderboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/markets': {
@@ -218,7 +278,10 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
+  FaqRoute: FaqRoute,
+  LeaderboardRoute: LeaderboardRoute,
   MarketsRoute: MarketsRoute,
   PlatformRoute: PlatformRoute,
   PrivacyRoute: PrivacyRoute,
