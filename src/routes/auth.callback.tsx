@@ -36,7 +36,7 @@ function Callback() {
   if (failed)
     return (
       <AuthShell title="We couldn't complete sign-in" subtitle="The link may have expired or already been used.">
-        <Button asChild className="w-full"><Link to="/login" search={{ redirect: undefined }}>Back to sign in</Link></Button>
+        <Button asChild className="w-full"><Link to="/login">Back to sign in</Link></Button>
       </AuthShell>
     );
   return <AuthShell title="Signing you in…"><p className="text-sm text-muted-foreground">Verifying your session.</p></AuthShell>;

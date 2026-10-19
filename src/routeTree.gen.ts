@@ -14,13 +14,18 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as LeaderboardRouteImport } from './routes/leaderboard'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as MarketsRouteImport } from './routes/markets'
 import { Route as PlatformRouteImport } from './routes/platform'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RiskDisclosureRouteImport } from './routes/risk-disclosure'
 import { Route as SecurityRouteImport } from './routes/security'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -47,9 +52,19 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LeaderboardRoute = LeaderboardRouteImport.update({
   id: '/leaderboard',
   path: '/leaderboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketsRoute = MarketsRouteImport.update({
@@ -67,6 +82,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RiskDisclosureRoute = RiskDisclosureRouteImport.update({
   id: '/risk-disclosure',
   path: '/risk-disclosure',
@@ -77,9 +97,19 @@ const SecurityRoute = SecurityRouteImport.update({
   path: '/security',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -89,13 +119,18 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/faq': typeof FaqRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/leaderboard': typeof LeaderboardRoute
+  '/login': typeof LoginRoute
   '/markets': typeof MarketsRoute
   '/platform': typeof PlatformRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/risk-disclosure': typeof RiskDisclosureRoute
   '/security': typeof SecurityRoute
+  '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -103,13 +138,18 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/faq': typeof FaqRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/leaderboard': typeof LeaderboardRoute
+  '/login': typeof LoginRoute
   '/markets': typeof MarketsRoute
   '/platform': typeof PlatformRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/risk-disclosure': typeof RiskDisclosureRoute
   '/security': typeof SecurityRoute
+  '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -118,13 +158,18 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/faq': typeof FaqRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/leaderboard': typeof LeaderboardRoute
+  '/login': typeof LoginRoute
   '/markets': typeof MarketsRoute
   '/platform': typeof PlatformRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/risk-disclosure': typeof RiskDisclosureRoute
   '/security': typeof SecurityRoute
+  '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -134,13 +179,18 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/faq'
+    | '/forgot-password'
     | '/leaderboard'
+    | '/login'
     | '/markets'
     | '/platform'
     | '/privacy'
+    | '/reset-password'
     | '/risk-disclosure'
     | '/security'
+    | '/signup'
     | '/terms'
+    | '/auth/callback'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -148,13 +198,18 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/faq'
+    | '/forgot-password'
     | '/leaderboard'
+    | '/login'
     | '/markets'
     | '/platform'
     | '/privacy'
+    | '/reset-password'
     | '/risk-disclosure'
     | '/security'
+    | '/signup'
     | '/terms'
+    | '/auth/callback'
   id:
     | '__root__'
     | '/'
@@ -162,13 +217,18 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/faq'
+    | '/forgot-password'
     | '/leaderboard'
+    | '/login'
     | '/markets'
     | '/platform'
     | '/privacy'
+    | '/reset-password'
     | '/risk-disclosure'
     | '/security'
+    | '/signup'
     | '/terms'
+    | '/auth/callback'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -177,13 +237,18 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   FaqRoute: typeof FaqRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   LeaderboardRoute: typeof LeaderboardRoute
+  LoginRoute: typeof LoginRoute
   MarketsRoute: typeof MarketsRoute
   PlatformRoute: typeof PlatformRoute
   PrivacyRoute: typeof PrivacyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   RiskDisclosureRoute: typeof RiskDisclosureRoute
   SecurityRoute: typeof SecurityRoute
+  SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -223,11 +288,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/leaderboard': {
       id: '/leaderboard'
       path: '/leaderboard'
       fullPath: '/leaderboard'
       preLoaderRoute: typeof LeaderboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/markets': {
@@ -251,6 +330,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/risk-disclosure': {
       id: '/risk-disclosure'
       path: '/risk-disclosure'
@@ -265,11 +351,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SecurityRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -281,13 +381,18 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   FaqRoute: FaqRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   LeaderboardRoute: LeaderboardRoute,
+  LoginRoute: LoginRoute,
   MarketsRoute: MarketsRoute,
   PlatformRoute: PlatformRoute,
   PrivacyRoute: PrivacyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   RiskDisclosureRoute: RiskDisclosureRoute,
   SecurityRoute: SecurityRoute,
+  SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

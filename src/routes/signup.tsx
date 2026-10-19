@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { passwordSchema } from "@/lib/validation";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({
@@ -20,14 +21,6 @@ export const Route = createFileRoute("/signup")({
   }),
   component: Signup,
 });
-
-export const passwordSchema = z
-  .string()
-  .min(10, "Use at least 10 characters")
-  .max(72, "Use 72 characters or fewer")
-  .regex(/[a-z]/, "Include a lowercase letter")
-  .regex(/[A-Z]/, "Include an uppercase letter")
-  .regex(/[0-9]/, "Include a number");
 
 const schema = z.object({
   displayName: z.string().trim().min(1, "Enter a display name").max(60),
