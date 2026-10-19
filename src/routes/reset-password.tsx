@@ -43,7 +43,7 @@ function Reset() {
     const pw = String(fd.get("password") ?? "");
     if (pw !== fd.get("confirm")) return setErr("Passwords don't match.");
     const p = passwordSchema.safeParse(pw);
-    if (!p.success) return setErr(p.error.issues[0].message);
+    if (!p.success) return setErr(p.error.issues[0]?.message ?? "Invalid input");
     setBusy(true);
     const { error } = await supabase.auth.updateUser({ password: pw });
     setBusy(false);

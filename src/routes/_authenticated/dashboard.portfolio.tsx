@@ -49,7 +49,7 @@ function Portfolio() {
 
   const demo = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("portfolio_positions").insert({ user_id: user!.id, asset_id: asset.data!.id, quantity: "1000", cost_basis_usd: null, source: "demo", note: "Demo entry — not a real holding" });
+      const { error } = await supabase.from("portfolio_positions").insert({ user_id: user!.id, asset_id: asset.data!.id, quantity: 1000, cost_basis_usd: null, source: "demo", note: "Demo entry — not a real holding" });
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Demo entry added (clearly labeled)."); refresh(); },
@@ -140,7 +140,8 @@ function PositionDialog({ position, assetId, userId, onClose, onSaved }: { posit
     if (acquired && (isNaN(Date.parse(acquired)) || new Date(acquired) > new Date())) return setErr("Purchase date can't be in the future.");
     const note = String(fd.get("note") ?? "").trim().slice(0, 500) || null;
     setBusy(true);
-    const payload = { quantity, cost_basis_usd: cost, acquired_on: acquired, note };
+    // numeric strings keep full precision; Postgres parses them exactly
+    const payload = { quantity: quantity as unknown as number, cost_basis_usd: cost as unknown as number | null, acquired_on: acquired, note };
     const { error } = position
       ? await supabase.from("portfolio_positions").update(payload).eq("id", position.id)
       : await supabase.from("portfolio_positions").insert({ ...payload, user_id: userId, asset_id: assetId, source: "user_reported" });

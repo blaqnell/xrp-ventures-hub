@@ -39,7 +39,7 @@ export const coinGeckoMarketSchema = z
 export function parseCoinGeckoMarket(json: unknown) {
   const r = coinGeckoMarketSchema.safeParse(json);
   if (!r.success) return null;
-  const m = r.data[0];
+  const m = r.data[0]!;
   return {
     price_usd: m.current_price,
     change_24h_pct: m.price_change_percentage_24h ?? null,
