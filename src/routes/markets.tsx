@@ -10,13 +10,13 @@ export const Route = createFileRoute("/markets")({
       { title: "XRP Markets — Live XRP/USD Price | XRP Ventures" },
       { name: "description", content: "Live XRP/USD price, 24h change, high, low, volume, market cap and interactive price history with source and timestamp." },
       { property: "og:title", content: "XRP Markets — Live XRP/USD Price" },
-      { property: "og:description", content: "Live XRP market data from CoinGecko with clear freshness indicators." },
+      { property: "og:description", content: "Real-time XRP market data from Coinbase and CoinGecko with clear freshness indicators." },
     ],
   }),
   loader: ({ context }) => context.queryClient.prefetchQuery(quoteQuery()),
   component: () => (
     <PublicShell>
-      <PageHero eyebrow="Markets" title="XRP / USD" intro="Real market prices from CoinGecko. Data refreshes about every minute; if the provider is unavailable we tell you instead of showing an old price as current." />
+      <PageHero eyebrow="Markets" title="XRP / USD" intro="Real-time XRP/USD from the Coinbase Exchange feed, refreshed on screen up to 10 times a second, with volume and market cap from CoinGecko. If a feed drops we tell you instead of showing an old price as current." />
       <div className="mx-auto grid max-w-7xl gap-6 px-4 py-12 sm:px-6">
         <QuotePanel />
         <PriceChart height={380} />
