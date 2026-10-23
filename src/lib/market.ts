@@ -80,3 +80,57 @@ export const CHART_RANGES = [
   { key: "365", label: "1Y" },
 ] as const;
 export type ChartRange = (typeof CHART_RANGES)[number]["key"];
+
+/* ---------- Live ticker (Coinbase Exchange public WebSocket) ---------- */
+export const LIVE_SOURCE = "Coinbase Exchange";
+export const LIVE_WS_URL = "wss://ws-feed.exchange.coinbase.com";
+/** The screen is refreshed with the newest live tick at most this often. */
+export const LIVE_UPDATE_MS = 100;
+/** A live tick older than this is no longer treated as current. */
+export const LIVE_STALE_AFTER_MS = 30_000;
+
+export type LiveTick = {
+  price: number;
+  open24h: number | null;
+  high24h: number | null;
+  low24h: number | null;
+  time: string;
+};
+
+const numStr = z.string().regex(/^\d+(\.\d+)?$/).transform(Number).pipe(z.number().finite());
+const tickerSchema = z.object({
+  type: z.literal("ticker"),
+  product_id: z.literal("XRP-USD"),
+  price: numStr.pipe(z.number().positive()),
+  open_24h: numStr.optional(),
+  high_24h: numStr.optional(),
+  low_24h: numStr.optional(),
+  time: z.string().datetime({ offset: true }),
+});
+
+export function parseCoinbaseTicker(json: unknown): LiveTick | null {
+  const r = tickerSchema.safeParse(json);
+  if (!r.success) return null;
+  const m = r.data;
+  return { price: m.price, open24h: m.open_24h ?? null, high24h: m.high_24h ?? null, low24h: m.low_24h ?? null, time: m.time };
+}
+
+/** Overlay a live tick on the cached quote. Falls back to the cached quote when the tick is missing or too old. */
+export function mergeLiveQuote(base: Quote | undefined, tick: LiveTick | null, now = Date.now()): Quote | undefined {
+  if (!tick) return base;
+  const age = now - new Date(tick.time).getTime();
+  if (!Number.isFinite(age) || age > LIVE_STALE_AFTER_MS) return base;
+  const change = tick.open24h && tick.open24h > 0 ? ((tick.price - tick.open24h) / tick.open24h) * 100 : (base?.change24hPct ?? null);
+  return {
+    status: "live",
+    priceUsd: tick.price,
+    change24hPct: change,
+    high24h: tick.high24h ?? base?.high24h ?? null,
+    low24h: tick.low24h ?? base?.low24h ?? null,
+    volume24h: base?.volume24h ?? null,
+    marketCap: base?.marketCap ?? null,
+    source: base?.priceUsd != null ? `${LIVE_SOURCE} (price) · ${base.source} (volume, market cap)` : LIVE_SOURCE,
+    providerUpdatedAt: tick.time,
+    fetchedAt: tick.time,
+  };
+}

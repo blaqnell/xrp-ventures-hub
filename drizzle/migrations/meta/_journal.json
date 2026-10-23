@@ -15,6 +15,13 @@
       "when": 1792411493145,
       "tag": "0001_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792742665407,
+      "tag": "0002_account_ledger_admin_credits",
+      "breakpoints": true
     }
   ]
 }
