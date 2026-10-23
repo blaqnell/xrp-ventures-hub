@@ -6,7 +6,7 @@ import { PriceChart } from "@/components/market/PriceChart";
 import { MarketSourceLine, MarketStatusBadge } from "@/components/market/MarketStatusBadge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { quoteQuery } from "@/lib/market.functions";
+import { useXrpQuote } from "@/lib/live-ticker";
 import { positionsQuery } from "@/lib/queries";
 import { formatPct, formatPrice, formatUsd, formatXrp, portfolioTotals } from "@/lib/finance";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/_authenticated/dashboard/")({
 });
 
 function Overview() {
-  const quote = useQuery(quoteQuery());
+  const quote = useXrpQuote();
   const positions = useQuery(positionsQuery());
   const activity = useQuery({
     queryKey: ["history", "recent"],

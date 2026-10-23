@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { downloadCsv, positionsQuery, xrpAssetQuery } from "@/lib/queries";
-import { quoteQuery } from "@/lib/market.functions";
+import { useXrpQuote } from "@/lib/live-ticker";
 import { formatUsd, formatXrp, parseQuantity, parseUsd, positionValue, unrealizedPnl } from "@/lib/finance";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -29,7 +29,7 @@ function Portfolio() {
   const qc = useQueryClient();
   const positions = usePositions();
   const asset = useQuery(xrpAssetQuery());
-  const quote = useQuery(quoteQuery());
+  const quote = useXrpQuote();
   const price = quote.data?.status === "live" ? quote.data.priceUsd : null;
   const [editing, setEditing] = useState<Pos | "new" | null>(null);
 

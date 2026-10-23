@@ -1,11 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { quoteQuery } from "@/lib/market.functions";
+import { useXrpQuote } from "@/lib/live-ticker";
 import { formatCompact, formatPct, formatPrice } from "@/lib/finance";
 import { MarketSourceLine, MarketStatusBadge } from "./MarketStatusBadge";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function QuotePanel({ compact = false }: { compact?: boolean }) {
-  const { data: q, isLoading, isError } = useQuery(quoteQuery());
+  const { data: q, isLoading, isError } = useXrpQuote();
   if (isLoading) return <Skeleton className="h-40 w-full rounded-2xl" />;
   if (isError || !q)
     return (
@@ -30,7 +29,7 @@ export function QuotePanel({ compact = false }: { compact?: boolean }) {
         <p className="mt-4 text-lg text-muted-foreground">Price unavailable</p>
       ) : (
         <div className="mt-3 flex flex-wrap items-baseline gap-3">
-          <span className={`tabular text-4xl font-semibold tracking-tight ${q.status !== "live" ? "text-muted-foreground line-through decoration-warning/60" : ""}`}>
+          <span className={`tabular text-4xl font-semibold tracking-tight transition-colors ${q.status !== "live" ? "text-muted-foreground line-through decoration-warning/60" : ""}`}>
             {formatPrice(q.priceUsd)}
           </span>
           <span className={`tabular text-sm font-medium ${up ? "text-success" : "text-destructive"}`}>
