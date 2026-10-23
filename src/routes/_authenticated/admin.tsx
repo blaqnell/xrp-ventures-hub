@@ -12,6 +12,8 @@ import { useAuth, useRoles } from "@/hooks/use-auth";
 import { MAX_CREDIT_USD, parseCreditAmount } from "@/lib/ledger";
 import { formatUsd } from "@/lib/finance";
 
+const errText = (e: unknown, fallback: string) => (e && typeof e === "object" && "message" in e && typeof e.message === "string" ? e.message : fallback);
+
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Admin | XRP Ventures" }, { name: "robots", content: "noindex" }] }),
   component: Admin,
@@ -32,7 +34,7 @@ function Admin() {
   return (
     <AppShell nav={[{ to: "/admin", label: "Overview", icon: () => null } as never]} title="Admin">
       <PageTitle title="Admin console" />
-      {m.error ? <p className="text-sm text-destructive">{m.error instanceof Error ? m.error.message : "Access denied"}</p> : (
+      {m.error ? <p className="text-sm text-destructive">{errText(m.error, "Access denied")}{/MFA/.test(errText(m.error, "")) && <> — <a href="/dashboard/security" className="underline">set up or verify your authenticator</a>.</>}</p> : (
         <>
           <div className="grid gap-4 sm:grid-cols-3">
             <StatCard label="Accounts" value={m.data?.["accounts"] ?? "—"} />
@@ -88,7 +90,7 @@ function FundAccounts() {
       qc.invalidateQueries({ queryKey: ["ledger"] });
       qc.invalidateQueries({ queryKey: ["notifications"] });
     },
-    onError: (e) => toast.error(e instanceof Error ? e.message : "Deposit failed"),
+    onError: (e) => toast.error(errText(e, "Deposit failed")),
   });
 
   const parsed = parseCreditAmount(amount);
@@ -111,7 +113,7 @@ function FundAccounts() {
           <Input aria-label="Search accounts" placeholder="Search by email or name" value={search} onChange={(e) => setSearch(e.target.value)} />
           <Button type="submit" variant="secondary"><Search className="h-4 w-4" /></Button>
         </form>
-        {users.error && <p className="mt-3 text-sm text-destructive">{users.error instanceof Error ? users.error.message : "Could not load accounts"}</p>}
+        {users.error && <p className="mt-3 text-sm text-destructive">{errText(users.error, "Could not load accounts")}</p>}
         <ul className="mt-3 max-h-80 divide-y overflow-y-auto">
           {users.data?.map((u) => (
             <li key={u.id} className="flex items-center justify-between gap-3 py-2.5 text-sm">
