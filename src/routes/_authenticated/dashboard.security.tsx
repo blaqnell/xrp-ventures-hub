@@ -34,7 +34,7 @@ function Security() {
     for (const x of f?.all ?? []) if (x.status !== "verified") await supabase.auth.mfa.unenroll({ factorId: x.id });
     const { data, error } = await supabase.auth.mfa.enroll({ factorType: "totp", friendlyName: `Authenticator ${Date.now()}` });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setEnroll({ id: data.id, qr: data.totp.qr_code, secret: data.totp.secret });
   }
 
@@ -43,7 +43,7 @@ function Security() {
     setBusy(true);
     const { error } = await supabase.auth.mfa.challengeAndVerify({ factorId, code: code.trim() });
     setBusy(false);
-    if (error) return toast.error("That code didn't work. Check your authenticator app and try again.");
+    if (error) { toast.error("That code didn't work. Check your authenticator app and try again."); return; }
     toast.success("Two-step verification is on for this session");
     setEnroll(null);
     setCode("");
@@ -52,7 +52,7 @@ function Security() {
 
   async function remove(factorId: string) {
     const { error } = await supabase.auth.mfa.unenroll({ factorId });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Authenticator removed");
     qc.invalidateQueries({ queryKey: ["mfa"] });
   }
