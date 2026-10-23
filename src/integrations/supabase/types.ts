@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_ledger: {
+        Row: {
+          amount_usd: number
+          created_at: string
+          created_by: string | null
+          entry_type: string
+          funding_source: string
+          id: string
+          memo: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_usd: number
+          created_at?: string
+          created_by?: string | null
+          entry_type?: string
+          funding_source?: string
+          id?: string
+          memo?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_usd?: number
+          created_at?: string
+          created_by?: string | null
+          entry_type?: string
+          funding_source?: string
+          id?: string
+          memo?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       assets: {
         Row: {
           created_at: string
@@ -598,6 +631,10 @@ export type Database = {
         Args: { _agent: string; _ticket: string }
         Returns: undefined
       }
+      admin_credit_account: {
+        Args: { _amount: number; _memo?: string; _target: string }
+        Returns: string
+      }
       admin_list_staff: {
         Args: never
         Returns: {
@@ -703,6 +740,7 @@ export type Database = {
         Args: { _event: string; _user_agent?: string }
         Returns: undefined
       }
+      my_account_balance: { Args: never; Returns: number }
       require_admin_level: {
         Args: { _roles: Database["public"]["Enums"]["app_role"][] }
         Returns: undefined
