@@ -10,6 +10,8 @@ import { useXrpQuote } from "@/lib/live-ticker";
 import { positionsQuery } from "@/lib/queries";
 import { formatPct, formatPrice, formatUsd, formatXrp, portfolioTotals } from "@/lib/finance";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
+import { balanceQuery } from "@/lib/ledger";
 
 export const Route = createFileRoute("/_authenticated/dashboard/")({
   head: () => ({ meta: [{ title: "Overview | XRP Ventures" }] }),
@@ -17,6 +19,8 @@ export const Route = createFileRoute("/_authenticated/dashboard/")({
 });
 
 function Overview() {
+  const { user } = useAuth();
+  const balance = useQuery({ ...balanceQuery(user?.id ?? ""), enabled: !!user });
   const quote = useXrpQuote();
   const positions = useQuery(positionsQuery());
   const activity = useQuery({
@@ -40,6 +44,15 @@ function Overview() {
   return (
     <>
       <PageTitle title="Overview" description="Estimated values use the live XRP price. Holdings are user-reported." action={q && <MarketStatusBadge quote={q} />} />
+      <div className="mb-4 rounded-2xl border bg-card p-5 shadow-card">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-xs text-muted-foreground">Account balance (USD)</p>
+            <p className="tabular mt-2 text-3xl font-semibold tracking-tight">{balance.data === undefined ? "—" : formatUsd(balance.data)}</p>
+          </div>
+          <Link to="/dashboard/transactions" className="text-xs text-primary hover:underline">View deposits</Link>
+        </div>
+      </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Tracked XRP (user-reported)" value={formatXrp(t.quantity)} hint={`${t.positionCount} entr${t.positionCount === 1 ? "y" : "ies"}`} />
         <StatCard label="Estimated value (USD)" value={live === null ? "Unavailable" : formatUsd(t.value)} hint="Quantity × current market price" />
