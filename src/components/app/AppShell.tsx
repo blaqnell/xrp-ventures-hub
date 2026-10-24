@@ -6,6 +6,7 @@ import { Logo } from "@/components/brand/Logo";
 import { useAuth, useRoles } from "@/hooks/use-auth";
 import { signOutEverywhere, unreadCountQuery } from "@/lib/queries";
 import { supabase } from "@/integrations/supabase/client";
+import { LivePricePill } from "@/components/market/LivePricePill";
 
 type NavItem = { to: string; label: string; icon: typeof Bell; exact?: boolean };
 
@@ -90,7 +91,8 @@ export function AppShell({ nav, title, children }: { nav: NavItem[]; title: stri
       <div className="min-w-0 flex-1">
         <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b bg-background/80 px-4 backdrop-blur lg:px-8">
           <button className="rounded-md p-2 lg:hidden" aria-label="Open menu" onClick={() => setOpen(true)}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
-          <span className="rounded-full border border-warning/30 bg-warning/10 px-2.5 py-0.5 text-[11px] text-warning">Tracking only · no real funds held</span>
+          <LivePricePill to="/dashboard/markets" />
+          <span className="hidden rounded-full border border-warning/30 bg-warning/10 px-2.5 py-0.5 text-[11px] text-warning md:inline">Tracking only · no real funds held</span>
           <span className="hidden truncate text-sm text-muted-foreground sm:block">{user?.email}</span>
         </header>
         <main id="main" className="mx-auto max-w-6xl px-4 py-8 lg:px-8">{children}</main>
