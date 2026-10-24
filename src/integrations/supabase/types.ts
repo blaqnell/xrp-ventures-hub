@@ -635,6 +635,10 @@ export type Database = {
         Args: { _amount: number; _memo?: string; _target: string }
         Returns: string
       }
+      admin_debit_account: {
+        Args: { _amount: number; _memo?: string; _target: string }
+        Returns: string
+      }
       admin_list_staff: {
         Args: never
         Returns: {
