@@ -78,19 +78,21 @@ function FundAccounts() {
     },
   });
 
+  const [mode, setMode] = useState<"deposit" | "debit">("deposit");
   const credit = useMutation({
-    mutationFn: async (v: { target: string; amount: string; memo: string }) => {
-      const { error } = await supabase.rpc("admin_credit_account", { _target: v.target, _amount: Number(v.amount), _memo: v.memo });
+    mutationFn: async (v: { target: string; amount: string; memo: string; mode: "deposit" | "debit" }) => {
+      const fn = v.mode === "deposit" ? "admin_credit_account" : "admin_debit_account";
+      const { error } = await supabase.rpc(fn, { _target: v.target, _amount: Number(v.amount), _memo: v.memo });
       if (error) throw error;
     },
     onSuccess: (_d, v) => {
-      toast.success(`${formatUsd(v.amount)} deposited to ${target?.label}`);
+      toast.success(v.mode === "deposit" ? `${formatUsd(v.amount)} deposited to ${target?.label}` : `${formatUsd(v.amount)} debited from ${target?.label}`);
       setAmount("");
       setMemo("");
       qc.invalidateQueries({ queryKey: ["ledger"] });
       qc.invalidateQueries({ queryKey: ["notifications"] });
     },
-    onError: (e) => toast.error(errText(e, "Deposit failed")),
+    onError: (e) => toast.error(errText(e, mode === "deposit" ? "Deposit failed" : "Debit failed")),
   });
 
   const parsed = parseCreditAmount(amount);
