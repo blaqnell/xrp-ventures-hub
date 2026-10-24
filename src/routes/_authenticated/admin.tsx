@@ -101,15 +101,17 @@ function FundAccounts() {
   function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!target || !parsed) return;
-    credit.mutate({ target: target.id, amount: parsed, memo });
+    credit.mutate({ target: target.id, amount: parsed, memo, mode });
   }
+  const toggle = (t: Target) => setTarget((cur) => (cur?.id === t.id ? null : t));
+  const isDeposit = mode === "deposit";
 
   return (
     <section className="mt-8 grid gap-6 lg:grid-cols-5">
       <div className="rounded-2xl border bg-card p-5 shadow-card lg:col-span-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="flex items-center gap-2 font-medium"><Wallet className="h-4 w-4" /> Fund an account</h2>
-          {user && <Button size="sm" variant="outline" onClick={() => setTarget({ id: user.id, label: "your account" })}>Fund my account</Button>}
+          <h2 className="flex items-center gap-2 font-medium"><Wallet className="h-4 w-4" /> Manage account funds</h2>
+          {user && <Button size="sm" variant={target?.id === user.id ? "default" : "outline"} onClick={() => toggle({ id: user.id, label: "your account" })}>{target?.id === user.id ? "My account selected" : "Select my account"}</Button>}
         </div>
         <form className="mt-4 flex gap-2" onSubmit={(e) => { e.preventDefault(); setTerm(search.trim()); }}>
           <Input aria-label="Search accounts" placeholder="Search by email or name" value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -123,8 +125,8 @@ function FundAccounts() {
                 <p className="truncate font-medium">{u.display_name}{u.id === user?.id && " (you)"}</p>
                 <p className="truncate text-xs text-muted-foreground">{u.email}</p>
               </div>
-              <Button size="sm" variant={target?.id === u.id ? "default" : "outline"} onClick={() => setTarget({ id: u.id, label: u.id === user?.id ? "your account" : (u.email ?? u.display_name) })}>
-                {target?.id === u.id ? "Selected" : "Select"}
+              <Button size="sm" aria-pressed={target?.id === u.id} variant={target?.id === u.id ? "default" : "outline"} onClick={() => toggle({ id: u.id, label: u.id === user?.id ? "your account" : (u.email ?? u.display_name) })}>
+                {target?.id === u.id ? "Deselect" : "Select"}
               </Button>
             </li>
           ))}
@@ -134,8 +136,14 @@ function FundAccounts() {
 
       <div className="space-y-6 lg:col-span-2">
         <form onSubmit={submit} className="rounded-2xl border bg-card p-5 shadow-card">
-          <h2 className="font-medium">Deposit</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{target ? <>To <span className="text-foreground">{target.label}</span></> : "Select an account first."}</p>
+          <div className="grid grid-cols-2 gap-1 rounded-lg bg-muted p-1" role="tablist">
+            <Button type="button" size="sm" variant={isDeposit ? "default" : "ghost"} onClick={() => setMode("deposit")}>Deposit</Button>
+            <Button type="button" size="sm" variant={!isDeposit ? "default" : "ghost"} onClick={() => setMode("debit")}>Debit</Button>
+          </div>
+          <div className="mt-3 flex items-center justify-between gap-2 text-sm text-muted-foreground">
+            <span className="min-w-0 truncate">{target ? <>{isDeposit ? "To" : "From"} <span className="text-foreground">{target.label}</span></> : "Select an account first."}</span>
+            {target && <button type="button" className="shrink-0 text-xs text-primary underline" onClick={() => setTarget(null)}>Clear</button>}
+          </div>
           <div className="mt-4 space-y-3">
             <div>
               <Label htmlFor="amount">Amount (USD)</Label>
@@ -146,21 +154,21 @@ function FundAccounts() {
               <Label htmlFor="memo">Note (optional)</Label>
               <Input id="memo" maxLength={200} value={memo} onChange={(e) => setMemo(e.target.value)} className="mt-1.5" />
             </div>
-            <Button type="submit" className="w-full" disabled={!target || !parsed || credit.isPending}>
-              {credit.isPending ? "Depositing…" : parsed ? `Deposit ${formatUsd(parsed)}` : "Deposit"}
+            <Button type="submit" variant={isDeposit ? "default" : "destructive"} className="w-full" disabled={!target || !parsed || credit.isPending}>
+              {credit.isPending ? "Working…" : `${isDeposit ? "Deposit" : "Debit"}${parsed ? ` ${formatUsd(parsed)}` : ""}`}
             </Button>
           </div>
-          <p className="mt-3 text-xs text-muted-foreground">Funds are issued by the system. Every deposit is permanent and recorded in the audit log.</p>
+          <p className="mt-3 text-xs text-muted-foreground">Every deposit and debit is permanent and recorded in the audit log. Debits cannot exceed the account balance.</p>
         </form>
 
         <div className="rounded-2xl border bg-card p-5 shadow-card">
-          <h2 className="font-medium">Recent deposits</h2>
+          <h2 className="font-medium">Recent activity</h2>
           {recent.data?.length === 0 && <p className="mt-3 text-sm text-muted-foreground">None yet.</p>}
           <ul className="mt-3 divide-y">
             {recent.data?.map((r) => (
               <li key={r.id} className="flex items-center justify-between gap-3 py-2 text-sm">
                 <span className="min-w-0 truncate">{nameOf(r.user_id)}{r.memo && <span className="text-muted-foreground"> · {r.memo}</span>}</span>
-                <span className="tabular shrink-0 text-success">+{formatUsd(r.amount_usd)}</span>
+                <span className={`tabular shrink-0 ${Number(r.amount_usd) < 0 ? "text-destructive" : "text-success"}`}>{Number(r.amount_usd) < 0 ? "−" : "+"}{formatUsd(Math.abs(Number(r.amount_usd)))}</span>
               </li>
             ))}
           </ul>
