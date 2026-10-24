@@ -54,8 +54,8 @@ function Transactions() {
           <ul className="divide-y">
             {deposits.data?.map((d) => (
               <li key={d.id} className="flex items-center justify-between gap-3 px-4 py-2.5 text-sm">
-                <span className="min-w-0 truncate">Deposit{d.memo && <span className="text-muted-foreground"> · {d.memo}</span>}<span className="block text-xs text-muted-foreground">{new Date(d.created_at).toLocaleString("en-US")}</span></span>
-                <span className="tabular shrink-0 font-medium text-success">+{formatUsd(d.amount_usd)}</span>
+                <span className="min-w-0 truncate">{d.entry_type === "debit" ? "Debit" : "Deposit"}{d.memo && <span className="text-muted-foreground"> · {d.memo}</span>}<span className="block text-xs text-muted-foreground">{new Date(d.created_at).toLocaleString("en-US")}</span></span>
+                <span className={`tabular shrink-0 font-medium ${Number(d.amount_usd) < 0 ? "text-destructive" : "text-success"}`}>{Number(d.amount_usd) < 0 ? "−" : "+"}{formatUsd(Math.abs(Number(d.amount_usd)))}</span>
               </li>
             ))}
           </ul>

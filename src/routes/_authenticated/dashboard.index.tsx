@@ -12,6 +12,7 @@ import { formatPct, formatPrice, formatUsd, formatXrp, portfolioTotals } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { balanceQuery } from "@/lib/ledger";
+import { DepositContactDialog } from "@/components/app/DepositContactDialog";
 
 export const Route = createFileRoute("/_authenticated/dashboard/")({
   head: () => ({ meta: [{ title: "Overview | XRP Ventures" }] }),
@@ -50,7 +51,10 @@ function Overview() {
             <p className="text-xs text-muted-foreground">Account balance (USD)</p>
             <p className="tabular mt-2 text-3xl font-semibold tracking-tight">{balance.data === undefined ? "—" : formatUsd(balance.data)}</p>
           </div>
-          <Link to="/dashboard/transactions" className="text-xs text-primary hover:underline">View deposits</Link>
+          <div className="flex items-center gap-3">
+            <Link to="/dashboard/transactions" className="text-xs text-primary hover:underline">View history</Link>
+            <DepositContactDialog />
+          </div>
         </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
